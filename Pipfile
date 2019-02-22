@@ -7,6 +7,10 @@ name = "pypi"
 
 [packages]
 sklearn = "*"
+matplotlib = "*"
+pandas = "~=0.20.3"
+pandas-ml = "*"
+graphviz = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"
