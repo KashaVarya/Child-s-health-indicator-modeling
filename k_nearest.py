@@ -1,26 +1,38 @@
-from sklearn import datasets
+import sys
+from memory_profiler import profile
+import pandas
+import time
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from sklearn import neighbors
 import matplotlib.pyplot as plt
 
-iris = datasets.load_iris()
 
-X = iris.data
-y = iris.target
+@profile
+def k_nearest():
+    dataframe = pandas.read_csv('data.csv', header=0)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=2)
+    X = dataframe.drop('ИН', axis=1)
+    y = dataframe['ИН']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
 
-plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train)
-plt.scatter(X_test[:, 0], X_test[:, 1], c='m')
-plt.show()
+    start = time.time()
+    model = neighbors.KNeighborsRegressor(n_neighbors=10)
+    model.fit(X_train, y_train)
+    end = time.time()
 
-model = neighbors.KNeighborsClassifier(n_neighbors=10)
-model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
 
-print(model.score(X_test, y_test))
+    print('Час побудови моделі (мс): ', end - start)
+    print('Об’єм пам’яті, займаємий моделю (MiB): ', sys.getsizeof(model))
+    print('Помилка моделі для навчальної вибірки (%): ', 100 - model.score(X_train, y_train) * 100)
+    print('Помилка моделі для тестової вибірки (%): ', 100 - model.score(X_test, y_test) * 100)
 
-predictions = model.predict(X_test)
+    plt.scatter(y_test, predictions)
+    plt.xlabel("Реальні значення")
+    plt.ylabel("Спрогнозовані значення")
+    plt.show()
 
-print(metrics.classification_report(y_test, predictions))
-print(metrics.confusion_matrix(y_test, predictions))
+
+if __name__ == '__main__':
+    k_nearest()
