@@ -8,9 +8,11 @@ name = "pypi"
 [packages]
 sklearn = "*"
 matplotlib = "*"
-pandas = "~=0.20.3"
+pandas = "~=0.23.3"
 pandas-ml = "*"
 graphviz = "*"
+cython = "*"
+memory-profiler = "*"
 
 [requires]
 python_version = "3.6"
