@@ -1,3 +1,4 @@
+import pickle
 import sys
 from memory_profiler import profile
 import pandas
@@ -21,8 +22,10 @@ def decision_tree():
 
     predictions = cross_val_predict(model, X_test, y_test, cv=10)
 
+    p = pickle.dumps(model)
+    model_size = sys.getsizeof(p)
     print('Час побудови моделі (мс): ', mean(scores['fit_time']))
-    print('Об’єм пам’яті, займаємий моделю (MiB): ', sys.getsizeof(model))  # XXX
+    print('Об’єм пам’яті, займаємий моделю (MiB): ', model_size)
     print('Помилка моделі для навчальної вибірки (%): ', 100 - mean(scores['train_score']) * 100)
     print('Помилка моделі для тестової вибірки (%): ', 100 - mean(scores['test_score']) * 100)
 

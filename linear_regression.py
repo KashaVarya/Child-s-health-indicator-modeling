@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, cross_val_predict, cross_validate
 from sklearn.linear_model import LinearRegression
 from statistics import mean
+import pickle
 
 
 @profile
@@ -22,8 +23,10 @@ def linear_regression():
 
     print(scores)
 
+    p = pickle.dumps(model)
+    model_size = sys.getsizeof(p)
     print('Час побудови моделі (мс): ', mean(scores['fit_time']))
-    print('Об’єм пам’яті, займаємий моделю (MiB): ', sys.getsizeof(model))  # XXX
+    print('Об’єм пам’яті, займаємий моделю (MiB): ', model_size)
     print('Помилка моделі для навчальної вибірки (%): ', 100 - mean(scores['train_score']) * 100)
     print('Помилка моделі для тестової вибірки (%): ', 100 - mean(scores['test_score']) * 100)
 
