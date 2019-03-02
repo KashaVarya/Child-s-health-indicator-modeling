@@ -1,11 +1,10 @@
 import sys
 from memory_profiler import profile
 import pandas
-import time
-from sklearn import metrics
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_predict, cross_validate
 from sklearn import neighbors
 import matplotlib.pyplot as plt
+from statistics import mean
 
 
 @profile
@@ -16,17 +15,15 @@ def k_nearest():
     y = dataframe['ИН']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
 
-    start = time.time()
     model = neighbors.KNeighborsRegressor(n_neighbors=10)
-    model.fit(X_train, y_train)
-    end = time.time()
+    scores = cross_validate(model, X_train, y_train, cv=10, return_train_score=True)
 
-    predictions = model.predict(X_test)
+    predictions = cross_val_predict(model, X_test, y_test, cv=10)
 
-    print('Час побудови моделі (мс): ', end - start)
-    print('Об’єм пам’яті, займаємий моделю (MiB): ', sys.getsizeof(model))
-    print('Помилка моделі для навчальної вибірки (%): ', 100 - model.score(X_train, y_train) * 100)
-    print('Помилка моделі для тестової вибірки (%): ', 100 - model.score(X_test, y_test) * 100)
+    print('Час побудови моделі (мс): ', mean(scores['fit_time']))
+    print('Об’єм пам’яті, займаємий моделю (MiB): ', sys.getsizeof(model))  # XXX
+    print('Помилка моделі для навчальної вибірки (%): ', 100 - mean(scores['train_score']) * 100)
+    print('Помилка моделі для тестової вибірки (%): ', 100 - mean(scores['test_score']) * 100)
 
     plt.scatter(y_test, predictions)
     plt.xlabel("Реальні значення")
