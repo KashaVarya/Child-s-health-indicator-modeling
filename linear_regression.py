@@ -1,11 +1,9 @@
-import sys
 from memory_profiler import profile
 import pandas
-import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, cross_val_predict, cross_validate
 from sklearn.linear_model import LinearRegression
-from statistics import mean
-import pickle
+
+from util import method_results
 
 
 @profile
@@ -21,19 +19,7 @@ def linear_regression():
 
     predictions = cross_val_predict(model, X_test, y_test, cv=10)
 
-    print(scores)
-
-    p = pickle.dumps(model)
-    model_size = sys.getsizeof(p)
-    print('Час побудови моделі (мс): ', mean(scores['fit_time']))
-    print('Об’єм пам’яті, займаємий моделю (MiB): ', model_size)
-    print('Помилка моделі для навчальної вибірки (%): ', 100 - mean(scores['train_score']) * 100)
-    print('Помилка моделі для тестової вибірки (%): ', 100 - mean(scores['test_score']) * 100)
-
-    plt.scatter(y_test, predictions)
-    plt.xlabel("Реальні значення")
-    plt.ylabel("Спрогнозовані значення")
-    plt.show()
+    method_results(model, scores, y_test, predictions)
 
 
 if __name__ == '__main__':
