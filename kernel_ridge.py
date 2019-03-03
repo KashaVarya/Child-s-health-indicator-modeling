@@ -19,7 +19,8 @@ def kernel_ridge():
 
     predictions = cross_val_predict(model, X_test, y_test, cv=10)
 
-    method_results(model, scores, y_test, predictions)
+    model.fit(X_train, y_train)
+    method_results(model, scores, y_test, predictions, model.dual_coef_.shape[0])
 
 
 if __name__ == '__main__':

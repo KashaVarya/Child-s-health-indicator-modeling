@@ -2,6 +2,7 @@ from memory_profiler import profile
 import pandas
 from sklearn.model_selection import train_test_split, cross_val_predict, cross_validate
 from sklearn.neural_network import MLPRegressor
+import numpy as np
 
 from util import method_results
 
@@ -20,7 +21,11 @@ def mlp_regressor():
 
     predictions = cross_val_predict(model, X_test, y_test, cv=10)
 
-    method_results(model, scores, y_test, predictions)
+    model.fit(X_train, y_train)
+    # print(model.coefs_)
+    print(model.n_layers_)
+    print(model.n_outputs_)
+    method_results(model, scores, y_test, predictions, [np.shape(a) for a in model.coefs_])
 
 
 if __name__ == '__main__':
