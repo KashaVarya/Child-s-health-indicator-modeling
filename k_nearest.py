@@ -19,7 +19,7 @@ def k_nearest():
 
     predictions = cross_val_predict(model, X_test, y_test, cv=10)
 
-    method_results(model, scores, y_test, predictions)
+    method_results(model, scores, y_test, predictions, None)
 
 
 if __name__ == '__main__':

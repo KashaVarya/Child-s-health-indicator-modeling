@@ -20,12 +20,14 @@ def decision_tree():
 
     predictions = cross_val_predict(model, X_test, y_test, cv=10)
 
-    method_results(model, scores, y_test, predictions)
-
     model.fit(X_train, y_train)
+    method_results(model, scores, y_test, predictions, model.feature_importances_.shape[0])
+
     graph_data = tree.export_graphviz(model, out_file=None, filled=True)
     graph = graphviz.Source(graph_data)
     graph.render("children", view=True)
+
+
 
 
 if __name__ == '__main__':

@@ -27,7 +27,9 @@ def svm():
     scores = cross_validate(model, X_train, y_train.ravel(), cv=10, return_train_score=True)
     predictions = cross_val_predict(model, rbX.transform(X_test), y_test.ravel(), cv=10)
 
-    method_results(model, scores, y_test, predictions)
+    model.fit(X_train, y_train.ravel())
+    params_shape = model.support_vectors_.shape[0] * model.support_vectors_.shape[1]
+    method_results(model, scores, y_test, predictions, params_shape)
 
 
 if __name__ == '__main__':
