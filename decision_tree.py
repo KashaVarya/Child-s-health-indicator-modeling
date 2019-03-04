@@ -28,7 +28,5 @@ def decision_tree():
     graph.render("children", view=True)
 
 
-
-
 if __name__ == '__main__':
     decision_tree()
