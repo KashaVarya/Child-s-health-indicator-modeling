@@ -12,7 +12,7 @@ def k_nearest():
 
     X = dataframe.drop('ИН', axis=1)
     y = dataframe['ИН']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 
     model = neighbors.KNeighborsRegressor(n_neighbors=10)
     scores = cross_validate(model, X_train, y_train, cv=10, return_train_score=True)

@@ -13,7 +13,7 @@ def decision_tree():
 
     X = dataframe.drop('ИН', axis=1)
     y = dataframe['ИН']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 
     model = tree.DecisionTreeRegressor(max_depth=100)
     scores = cross_validate(model, X_train, y_train, cv=10, return_train_score=True)

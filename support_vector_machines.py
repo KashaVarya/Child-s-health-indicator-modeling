@@ -19,7 +19,7 @@ def svm():
     rbY = RobustScaler()
     y = rbY.fit_transform(y.values.reshape(-1, 1))
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 
     # kernel: rbf, sigmoid, linear, poly   gamma=0.1, C=100, epsilon=0.1
     model = SVR(kernel='rbf', gamma='auto')
