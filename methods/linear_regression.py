@@ -1,3 +1,4 @@
+import os
 from time import time
 
 import pandas
@@ -10,7 +11,8 @@ from util import method_results
 
 @profile
 def linear_regression():
-    dataframe = pandas.read_csv('data.csv', header=0)
+    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data.csv')
+    dataframe = pandas.read_csv(csv_path, header=0)
 
     X = dataframe.drop('ИН', axis=1)
     y = dataframe['ИН']
@@ -25,7 +27,7 @@ def linear_regression():
     predict_time = predict_end - predict_start
 
     model.fit(X_train, y_train)
-    method_results(model, scores, y_test, predictions, model.coef_.shape[0], predict_time)
+    method_results(model, scores, y_test, predictions, model.coef_.shape[0], predict_time, X_train)
 
 
 if __name__ == '__main__':

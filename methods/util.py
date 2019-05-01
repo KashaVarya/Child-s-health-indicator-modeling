@@ -4,7 +4,15 @@ from statistics import mean
 import pickle
 
 
-def method_results(model, scores, y_test, predictions, params_shape, predict_time):
+def method_results(
+        model,
+        scores,
+        y_test,
+        predictions,
+        params_shape,
+        predict_time,
+        train_set
+):
     # print(scores)
 
     model_size = sys.getsizeof(pickle.dumps(model))
@@ -12,6 +20,13 @@ def method_results(model, scores, y_test, predictions, params_shape, predict_tim
     print('Час роботи моделі (мс): ', predict_time * 1000)
     print('Об’єм пам’яті, займаємий моделю (bytes): ', model_size)
     print('Кількість параметрів моделі, які можливо налаштувати (ваги): ', params_shape)
+
+    try:
+        K0 = train_set.shape[1] * train_set.shape[0] / params_shape
+        print('Коэффициент обобщения моделью обучающих данных Ko: ', K0)
+    except Exception:
+        pass
+
     print('Помилка моделі для навчальної вибірки (%): ', 100 - mean(scores['train_score']) * 100)
     print('Помилка моделі для тестової вибірки (%): ', 100 - mean(scores['test_score']) * 100)
 

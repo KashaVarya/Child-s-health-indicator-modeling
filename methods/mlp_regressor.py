@@ -1,3 +1,4 @@
+import os
 from time import time
 
 import numpy as np
@@ -11,7 +12,8 @@ from util import method_results
 
 @profile
 def mlp_regressor():
-    dataframe = pandas.read_csv('data.csv', header=0)
+    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data.csv')
+    dataframe = pandas.read_csv(csv_path, header=0)
 
     X = dataframe.drop('ИН', axis=1)
     y = dataframe['ИН']
@@ -30,7 +32,7 @@ def mlp_regressor():
     # print(model.coefs_)
     print(model.n_layers_)
     print(model.n_outputs_)
-    method_results(model, scores, y_test, predictions, [np.shape(a) for a in model.coefs_], predict_time)
+    method_results(model, scores, y_test, predictions, [np.shape(a) for a in model.coefs_], predict_time, X_train)
 
 
 if __name__ == '__main__':

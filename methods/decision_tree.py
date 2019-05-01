@@ -1,3 +1,4 @@
+import os
 from time import time
 
 import graphviz
@@ -11,7 +12,8 @@ from util import method_results
 
 @profile
 def decision_tree():
-    dataframe = pandas.read_csv('data.csv', header=0)
+    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data.csv')
+    dataframe = pandas.read_csv(csv_path, header=0)
 
     X = dataframe.drop('ИН', axis=1)
     y = dataframe['ИН']
@@ -26,7 +28,7 @@ def decision_tree():
     predict_time = predict_end - predict_start
 
     model.fit(X_train, y_train)
-    method_results(model, scores, y_test, predictions, model.feature_importances_.shape[0], predict_time)
+    method_results(model, scores, y_test, predictions, model.feature_importances_.shape[0], predict_time, X_train)
 
     graph_data = tree.export_graphviz(model, out_file=None, filled=True)
     graph = graphviz.Source(graph_data)

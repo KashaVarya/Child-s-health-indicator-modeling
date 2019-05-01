@@ -1,3 +1,4 @@
+import os
 from time import time
 
 import pandas
@@ -11,7 +12,8 @@ from util import method_results
 
 @profile
 def svm():
-    dataframe = pandas.read_csv('data.csv', header=0)
+    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data.csv')
+    dataframe = pandas.read_csv(csv_path, header=0)
 
     X = dataframe.drop('ИН', axis=1)
     y = dataframe['ИН']
@@ -35,7 +37,7 @@ def svm():
 
     model.fit(X_train, y_train.ravel())
     params_shape = model.support_vectors_.shape[0] * model.support_vectors_.shape[1]
-    method_results(model, scores, y_test, predictions, params_shape, predict_time)
+    method_results(model, scores, y_test, predictions, params_shape, predict_time, X_train)
 
 
 if __name__ == '__main__':
