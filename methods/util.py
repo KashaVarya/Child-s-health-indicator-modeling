@@ -22,7 +22,10 @@ def method_results(
     print('Кількість параметрів моделі, які можливо налаштувати (ваги): ', params_shape)
 
     try:
-        K0 = train_set.shape[1] * train_set.shape[0] / params_shape
+        if type(params_shape) == int:
+            K0 = train_set.shape[1] * train_set.shape[0] / params_shape
+        else:
+            K0 = train_set.shape[1] * train_set.shape[0] / 8300
         print('Коэффициент обобщения моделью обучающих данных Ko: ', K0)
     except Exception:
         pass
