@@ -4,11 +4,12 @@ from statistics import mean
 import pickle
 
 
-def method_results(model, scores, y_test, predictions, params_shape):
-    print(scores)
+def method_results(model, scores, y_test, predictions, params_shape, predict_time):
+    # print(scores)
 
     model_size = sys.getsizeof(pickle.dumps(model))
-    print('Час побудови моделі (мс): ', mean(scores['fit_time']))
+    print('Час побудови моделі (мс): ', mean(scores['fit_time']) * 1000)
+    print('Час роботи моделі (мс): ', predict_time * 1000)
     print('Об’єм пам’яті, займаємий моделю (bytes): ', model_size)
     print('Кількість параметрів моделі, які можливо налаштувати (ваги): ', params_shape)
     print('Помилка моделі для навчальної вибірки (%): ', 100 - mean(scores['train_score']) * 100)
